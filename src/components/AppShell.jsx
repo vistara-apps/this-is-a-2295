@@ -10,19 +10,28 @@ import {
   X, 
   Search,
   Bell,
-  Sparkles
+  Sparkles,
+  BookOpen,
+  UserCheck,
+  CreditCard
 } from 'lucide-react';
+import NotificationDropdown from './NotificationDropdown';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotifications } from '../contexts/NotificationContext';
 
 function AppShell({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotifications();
 
   const navigation = [
     { name: 'Dashboard', href: '/', icon: Home },
     { name: 'Communities', href: '/communities', icon: Users },
     { name: 'AI Hub', href: '/ai-hub', icon: Brain },
+    { name: 'Mentorship', href: '/mentorship', icon: UserCheck },
+    { name: 'Resources', href: '/resources', icon: BookOpen },
+    { name: 'Subscription', href: '/subscription', icon: CreditCard },
     { name: 'Profile', href: '/profile', icon: User },
   ];
 
@@ -116,9 +125,7 @@ function AppShell({ children }) {
               />
             </div>
             <div className="flex items-center gap-x-4 lg:gap-x-6">
-              <button className="p-2.5 text-white/70 hover:text-white">
-                <Bell className="h-6 w-6" />
-              </button>
+              <NotificationDropdown />
               <div className="hidden lg:block">
                 <ConnectButton />
               </div>
