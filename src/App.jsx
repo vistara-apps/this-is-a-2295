@@ -1,0 +1,46 @@
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AppShell from './components/AppShell';
+import Dashboard from './pages/Dashboard';
+import Communities from './pages/Communities';
+import AIHub from './pages/AIHub';
+import Profile from './pages/Profile';
+import Login from './pages/Login';
+import Community from './pages/Community';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { DataProvider } from './contexts/DataContext';
+
+function AppRoutes() {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Login />;
+  }
+
+  return (
+    <AppShell>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/communities" element={<Communities />} />
+        <Route path="/community/:id" element={<Community />} />
+        <Route path="/ai-hub" element={<AIHub />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AppShell>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <DataProvider>
+          <AppRoutes />
+        </DataProvider>
+      </AuthProvider>
+    </Router>
+  );
+}
+
+export default App;
